@@ -7,6 +7,7 @@ FROM alpine:${ALPINE_VERSION} AS base
 # Note: version repeated below
 ARG PHP_VERSION="83"  
 ARG DEFAULT_TZ="Europe/Brussels"
+ARG WORKER_COUNT="1"
 
 # Install packages
 # hadolint ignore=DL3018
@@ -84,6 +85,7 @@ RUN apk add --no-cache \
 # Copy configuration files
 COPY php-base/config/nginx/http.d/default-octane.conf /etc/nginx/http.d/default.conf
 COPY php-base/config/supervisor/conf.d/php-octane.conf /etc/supervisor/conf.d/
+RUN sed -i 's|{{WORKER_COUNT}}|'"${WORKER_COUNT}"'|g' /etc/supervisor/conf.d/php-octane.conf
 
 USER nobody
 
