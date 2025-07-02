@@ -20,6 +20,7 @@ RUN apk add --no-cache \
     php${PHP_VERSION}-fileinfo \
     php${PHP_VERSION}-iconv \
     php${PHP_VERSION}-intl \
+    icu-data-full \
     php${PHP_VERSION}-json \
     php${PHP_VERSION}-mbstring \
     php${PHP_VERSION}-opcache \
