@@ -17,6 +17,7 @@ RUN apk add --no-cache \
     php${PHP_VERSION}-common \
     php${PHP_VERSION}-curl \
     php${PHP_VERSION}-dom \
+    php${PHP_VERSION}-exif \
     php${PHP_VERSION}-fileinfo \
     php${PHP_VERSION}-iconv \
     php${PHP_VERSION}-intl \
@@ -57,6 +58,7 @@ COPY php-base/config/php/ /etc/php${PHP_VERSION}/
 COPY common/config/supervisor/supervisord.conf /etc/supervisor/
 COPY common/config/supervisor/conf.d/nginx.conf /etc/supervisor/conf.d/
 # - init
+
 COPY php-base/scripts/docker-entrypoint.sh /
 
 # Clean Up
