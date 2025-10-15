@@ -11,6 +11,7 @@ echo "client_max_body_size ${SERVER_POST_MAX_SIZE:-8M};" > /etc/nginx/site-mods-
 for php_config_file in /etc/php*/php-fpm.d/www.conf; do
   echo "php_admin_value[post_max_size] = ${SERVER_POST_MAX_SIZE:-8M}" >> "$php_config_file"
   echo "php_admin_value[upload_max_filesize] = ${SERVER_POST_MAX_FILESIZE:-2M}" >> "$php_config_file"
+  echo "php_admin_value[memory_limit] = ${SERVER_MEMORY_LIMIT:-128M}" >> "$php_config_file"
 done
 
 # Cache laravel config
@@ -31,9 +32,9 @@ elif [ "$1" = 'scheduler' ]; then
   php artisan schedule:work --verbose --no-interaction
 
 # Helper to run queue jobs
-elif [ "$1" = 'queue' ]; then 
+elif [ "$1" = 'queue' ]; then
   shift 1;
-  exec php artisan queue:work --verbose --tries=3 --timeout=60 --max-jobs=1000 --max-time=3600  "$@"
+  exec php -d memory_limit=${SERVER_MEMORY_LIMIT:-128M} artisan queue:work --verbose --tries=3 --timeout=60 --max-jobs=1000 --max-time=3600 --memory=${SERVER_MEMORY_LIMIT:-128M} "$@"
 
 # Init script, for use in initContainers (for example)
 elif [ "$1" = 'init' ]; then 
